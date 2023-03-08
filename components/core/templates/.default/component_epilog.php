@@ -12,3 +12,5 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 /** @var string $templateFile */
 /** @var string $templateFolder */
 /** @var string $templateName */
+
+//$assets = \Bitrix\Main\Page\Asset::getInstance();
