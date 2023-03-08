@@ -1,21 +1,17 @@
 <?php
-use Bitrix\Main;
-class CoreComponent extends \CBitrixComponent {
+declare(strict_types=1);
+namespace App\Components;
 
-    public function onPrepareComponentParams($params)
-    {
-        $params = parent::onPrepareComponentParams($params);
-        $params["CACHE_TIME"] = 0;
-        return $params;
-    }
+use App\BxKint;
+
+class CoreComponent extends \CBitrixComponent {
 
     public function executeComponent()
     {
         $this->includeComponentTemplate();
 
-        if(class_exists('\App\BxKint')) {
-            \App\BxKint::info($this->arResult);
-        }
+        if(class_exists('\App\BxKint'))
+            BxKint::info($this->arResult);
         return $this->arResult;
     }
 }
