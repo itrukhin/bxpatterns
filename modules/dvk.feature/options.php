@@ -1,56 +1,57 @@
 <?php
+use Bitrix\Main\Loader;
 use Bitrix\Main\Localization\Loc;
 
-$module_id = 'dvk.feature'; //обязательно, иначе права доступа не работают!
+$moduleId = 'dvk.feature';
 
 Loc::loadMessages(__FILE__);
 
-/**
- * @var CMain
- */
-global $APPLICATION;
+Loader::includeModule($moduleId);
 
-if ($APPLICATION->GetGroupRight($module_id) < "R") {
-    $APPLICATION->AuthForm(Loc::getMessage("ACCESS_DENIED"));
+if(!class_exists('Gelion\BitrixOptions\Form')) {
+    CAdminMessage::ShowMessage([
+        'MESSAGE' => _lang('CHECK_OPTIONS_ERROR_TITLE'),
+        'DETAILS' => _lang('CHECK_MPM_OPTIONS_ERROR'),
+        'TYPE' => 'ERROR',
+        'HTML' => true
+    ]);
+    return false;
 }
 
-\Bitrix\Main\Loader::includeModule($module_id);
-$request = \Bitrix\Main\HttpApplication::getInstance()->getContext()->getRequest();
-
-#Описание опций
-$aTabs = array(
-    array(
-        "DIV" => "rights",
-        "TAB" => Loc::getMessage("MAIN_TAB_RIGHTS"),
-        "TITLE" => Loc::getMessage("MAIN_TAB_TITLE_RIGHTS")
-    ),
-);
-
-#Визуальный вывод
-$tabControl = new \CAdminTabControl('tabControl', $aTabs);
-
-?>
-<?php $tabControl->Begin(); ?>
-    <form method='post' action='<?php echo $APPLICATION->GetCurPage()?>?mid=<?=htmlspecialcharsbx($request['mid'])?>&amp;lang=<?=$request['lang']?>' name='dvk_feature_settings'>
-
-        <?php /*foreach ($aTabs as $aTab) {
-            if($aTab['OPTIONS']) { ?>
-                <? $tabControl->BeginNextTab(); ?>
-                <? __AdmSettingsDrawList($module_id, $aTab['OPTIONS']); ?>
-                <? $tabControl->EndTab(); ?>
-            <? }
-        } */?>
-
-        <?php
-        $tabControl->BeginNextTab();
-        require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/admin/group_rights.php");
-        $tabControl->EndTab();
-
-
-        $tabControl->Buttons(); ?>
-
-        <input type="submit" name="Update" value="<?php echo GetMessage('MAIN_SAVE')?>">
-        <input type="reset" name="reset" value="<?php echo GetMessage('MAIN_RESET')?>">
-        <?=bitrix_sessid_post();?>
-    </form>
-<?php $tabControl->End(); ?>
+\Gelion\BitrixOptions\Form::generate($moduleId, [[
+    'DIV' => 'main',
+    'TAB' => _lang('SETTINGS'),
+    'TITLE' => _lang('SETTINGS'),
+    'ICON' => '',
+    'GROUPS' => [
+        [
+            'TITLE' => _lang('INTEGRATION'),
+            'OPTIONS' => [
+                'MODULE_ACTIVE' => [
+                    'SORT' => 10,
+                    'TYPE' => 'CHECKBOX',
+                    'FIELDS' => [
+                        'TITLE' => 'Модуль активен',
+                        'DEFAULT' => 'Y',
+                    ],
+                ],
+                'REMOVE_BX_JQUERY' => [
+                    'SORT' => 20,
+                    'TYPE' => 'CHECKBOX',
+                    'FIELDS' => [
+                        'TITLE' => 'Отключать встроенный в Битрикс jQuery',
+                        'DEFAULT' => 'Y',
+                    ],
+                ],
+                'OVERRIDE_BX_USER' => [
+                    'SORT' => 30,
+                    'TYPE' => 'CHECKBOX',
+                    'FIELDS' => [
+                        'TITLE' => 'Расширять класс пользователя Битрикс',
+                        'DEFAULT' => 'Y',
+                    ],
+                ],
+            ],
+        ]
+    ],
+]]);
