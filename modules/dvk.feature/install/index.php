@@ -16,15 +16,14 @@ class dvk_feature extends CModule {
         $this->MODULE_ID = 'dvk.feature';
         $this->MODULE_VERSION = $arModuleVersion["VERSION"];
         $this->MODULE_VERSION_DATE = $arModuleVersion["VERSION_DATE"];
-        $this->MODULE_NAME = Loc::getMessage("DVK_FEATURE_MODULE_NAME");
-        $this->MODULE_DESCRIPTION = Loc::getMessage("DVK_FEATURE_MODULE_DESC");
+        $this->MODULE_NAME = Loc::getMessage("dvk_feature_MODULE_NAME");
+        $this->MODULE_DESCRIPTION = Loc::getMessage("dvk_feature_MODULE_DESC");
 
-        $this->PARTNER_NAME = Loc::getMessage("DVK_FEATURE_PARTNER_NAME");
-        $this->PARTNER_URI = Loc::getMessage("DVK_FEATURE_PARTNER_URI");
+        $this->PARTNER_NAME = Loc::getMessage("dvk_feature_PARTNER_NAME");
+        $this->PARTNER_URI = Loc::getMessage("dvk_feature_PARTNER_URI");
 
-        $this->MODULE_SORT = 1;
         $this->SHOW_SUPER_ADMIN_GROUP_RIGHTS='Y';
-        $this->MODULE_GROUP_RIGHTS = "Y";
+        $this->MODULE_GROUP_RIGHTS = 'Y';
     }
 
     //Проверяем что система поддерживает D7
@@ -42,7 +41,7 @@ class dvk_feature extends CModule {
             \Bitrix\Main\ModuleManager::registerModule($this->MODULE_ID);
 
         } else {
-            $APPLICATION->ThrowException(Loc::getMessage("DVK_FEATURE_INSTALL_ERROR_VERSION"));
+            $APPLICATION->ThrowException(Loc::getMessage("dvk_feature_INSTALL_ERROR_VERSION"));
         }
     }
 
