@@ -8,7 +8,7 @@ use Bitrix\Main\LoaderException;
 
 class CoreComponent extends \CBitrixComponent {
 
-    public function executeComponent()
+    public function executeComponent(): array
     {
         $this->checkModules();
         $this->processRequest();
@@ -29,7 +29,7 @@ class CoreComponent extends \CBitrixComponent {
         return false;
     }
 
-    public function onPrepareComponentParams($params)
+    public function onPrepareComponentParams($params): array
     {
         $params = parent::onPrepareComponentParams($params);
 
