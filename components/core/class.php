@@ -47,4 +47,10 @@ class CoreComponent extends \CBitrixComponent {
             throw new LoaderException('dvk.feature module not installed!');
         }
     }
+
+    public function onIncludeComponentLang()
+    {
+        parent::onIncludeComponentLang();
+        $this->includeComponentLang(basename(__FILE__));
+    }
 }
