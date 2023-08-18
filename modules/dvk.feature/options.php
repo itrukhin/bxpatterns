@@ -1,6 +1,7 @@
 <?php
 use Bitrix\Main\Loader;
 use Bitrix\Main\Localization\Loc;
+use Dvk\Feature\Module;
 
 $moduleId = 'dvk.feature';
 
@@ -10,8 +11,8 @@ Loader::includeModule($moduleId);
 Loader::includeModule('mpm.options');
 if(!class_exists('Gelion\BitrixOptions\Form')) {
     CAdminMessage::ShowMessage([
-        'MESSAGE' => _lang('CHECK_OPTIONS_ERROR_TITLE'),
-        'DETAILS' => _lang('CHECK_MPM_OPTIONS_ERROR'),
+        'MESSAGE' => Module::lang('CHECK_OPTIONS_ERROR_TITLE'),
+        'DETAILS' => Module::lang('CHECK_MPM_OPTIONS_ERROR'),
         'TYPE' => 'ERROR',
         'HTML' => true
     ]);
@@ -20,12 +21,12 @@ if(!class_exists('Gelion\BitrixOptions\Form')) {
 
 \Gelion\BitrixOptions\Form::generate($moduleId, [[
     'DIV' => 'main',
-    'TAB' => _lang('SETTINGS'),
-    'TITLE' => _lang('SETTINGS'),
+    'TAB' => Module::lang('SETTINGS'),
+    'TITLE' => Module::lang('SETTINGS'),
     'ICON' => '',
     'GROUPS' => [
         [
-            'TITLE' => _lang('INTEGRATION'),
+            'TITLE' => Module::lang('INTEGRATION'),
             'OPTIONS' => [
                 'MODULE_ACTIVE' => [
                     'SORT' => 10,
