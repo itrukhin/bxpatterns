@@ -4,32 +4,34 @@ namespace Dvk\Feature;
 use Bitrix\Main\Application;
 use Bitrix\Main\Data\Cache;
 use Bitrix\Main\EventManager;
+use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\SystemException;
 
+/**
+ * the class is inherited by all its modules
+ */
 class Module {
 
-    static $MODULE_ID = 'dvk.feature';
     const MODULE_ID = 'dvk.feature';
 
     const CACHE_TIME = 86400;
-    const CACHE_DIR = 'dvk/feature';
 
     /**
      * @return array|null
      * @throws SystemException
      */
-    public static function checkEvents($module_id) {
-
+    public static function checkEvents(): ?array
+    {
         $cache = Cache::createInstance();
-        $cache_id = $module_id . '_EVENTS';
-        if ($cache->initCache(self::CACHE_TIME, $cache_id, self::CACHE_DIR)) {
+        $cache_id = static::MODULE_ID . '_EVENTS';
+        if ($cache->initCache(static::CACHE_TIME, $cache_id, static::MODULE_ID)) {
             return $cache->getVars();
         }
 
         $MODULE_EVENTS = array();
-        $event_file = realpath(__DIR__ . '/../../' . $module_id) . '/install/events.php';
+        $event_file = realpath(__DIR__ . '/../../' . static::MODULE_ID) . '/install/events.php';
         if(!file_exists($event_file)) {
-            $event_file = $_SERVER['DOCUMENT_ROOT'] . '/local/modules/' . $module_id . '/install/events.php';
+            $event_file = $_SERVER['DOCUMENT_ROOT'] . '/local/modules/' . static::MODULE_ID . '/install/events.php';
         }
         include($event_file);
 
@@ -38,7 +40,7 @@ class Module {
         }
 
         $connection = Application::getConnection();
-        $sql = "SELECT * FROM b_module_to_module WHERE TO_MODULE_ID = '" . $module_id . "'";
+        $sql = "SELECT * FROM b_module_to_module WHERE TO_MODULE_ID = '" . static::MODULE_ID . "'";
         $event_rows = $connection->query($sql)->fetchAll();
 
         $ex_events_res = array();
@@ -97,10 +99,17 @@ class Module {
             }
         }
 
-        if(self::CACHE_TIME && $cache->startDataCache()) {
+        if(static::CACHE_TIME && $cache->startDataCache()) {
             $cache->endDataCache($MODULE_EVENTS);
         }
 
         return $MODULE_EVENTS;
+    }
+
+    public static function lang(string $name, array $replace = []): string
+    {
+        $prefix = str_replace('.', '_', static::MODULE_ID);
+        $str = Loc::getMessage($prefix . '_' . $name, $replace);
+        return $str ?? 'Not found key ' . $prefix . '_' . $name;
     }
 }

@@ -7,7 +7,7 @@ $moduleId = 'dvk.feature';
 Loc::loadMessages(__FILE__);
 
 Loader::includeModule($moduleId);
-
+Loader::includeModule('mpm.options');
 if(!class_exists('Gelion\BitrixOptions\Form')) {
     CAdminMessage::ShowMessage([
         'MESSAGE' => _lang('CHECK_OPTIONS_ERROR_TITLE'),
