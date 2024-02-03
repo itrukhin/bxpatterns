@@ -5,7 +5,6 @@ namespace App\Components;
 use App\BxKint;
 use Bitrix\Main\Loader;
 use Bitrix\Main\LoaderException;
-use Dvk\Main\Utils;
 
 class CoreComponent extends \CBitrixComponent {
 
